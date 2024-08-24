@@ -1,0 +1,66 @@
+@import "react-slideshow-image/dist/styles.css";
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.custom-hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+}
+
+.custom-hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+
+
+.react-slideshow-container .default-nav {
+  display: none;
+}
+.custom-file-upload input[type="file"] {
+    display: none!important;
+  }
+  
+  /* Style the label to resemble a button */
+  .custom-file-upload {
+    display: block;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: rgb(61, 156, 229);
+    transition: background-color 0.3s ease;
+  }
+  
+  .custom-file-upload:hover {
+    background-color: rgb(5, 89, 117)
+  }
+
+/* Add this CSS to your styles */
+.accordion-content {
+  position: relative;
+}
+
+.arrow-up {
+  position: absolute;
+  top: -7px; /* Adjust this value as needed */
+  left: 7%;
+  margin-left: -10px; /* Adjust this value as needed */
+  border-width: 0 10px 10px 10px; /* Adjust this value as needed */
+  border-style: solid;
+  border-color: transparent transparent white transparent;
+}
+
+.content-inner {
+  background-color: white;
+  padding: 10px;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+
+}
+

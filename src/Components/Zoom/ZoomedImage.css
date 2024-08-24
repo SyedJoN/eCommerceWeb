@@ -1,0 +1,28 @@
+/* ZoomedImage.css */
+
+.zoomed-image-container {
+  position: relative;
+  overflow: hidden;
+  /* Adjust height as needed */
+}
+
+.zoomed-image {
+  position: absolute;
+  transform: scale(2.5);
+  width: 70px;
+  height: 70px;
+  /* Adjust the size of the magnifier */
+  border: 1px solid rgba(255, 255, 255, 0.5);; /* Example border style */
+  border-radius: 50%; /* Rounded shape for the magnifier */
+  pointer-events: none; /* Allow underlying elements to still receive pointer events */
+  z-index: 999; /* This can help show the cursor changes during dragging */
+}
+
+.original-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  
+}
+
