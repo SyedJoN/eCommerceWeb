@@ -13,4 +13,23 @@ Open this eCommerce project in your preferred code editor. For example, you can 
 In your terminal, navigate to the root directory of the eCommerce project and run:
 ```bash
 npm run dev
+```
 
+#3. Start the Backend API
+
+Open a New Terminal Window.
+
+Navigate to the apihub-main directory:
+
+```bash
+cd path/to/apihub-main
+```
+
+Run the following command to start the backend API:
+
+```bash
+npm run start
+```
+4. Access the Application
+   
+Visit the eCommerce web application in your browser, sign up for an account, and start exploring!
