@@ -15,7 +15,7 @@ In your terminal, navigate to the root directory of the eCommerce project and ru
 npm run dev
 ```
 
-#3. Start the Backend API
+### 3. Start the Backend API
 
 Open a New Terminal Window.
 
@@ -30,6 +30,6 @@ Run the following command to start the backend API:
 ```bash
 npm run start
 ```
-4. Access the Application
+### 4. Access the Application
    
 Visit the eCommerce web application in your browser, sign up for an account, and start exploring!
