@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
-import { fetchProducts, deleteProductById, getProductById } from '../../store/productSlice'
+import { fetchProducts, deleteProductById, getProductById, getCategoryById } from '../../store/productSlice'
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '../Button';
 import { Link, useNavigate } from 'react-router-dom'
@@ -15,8 +15,30 @@ function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
+
+  const [categoryNames, setCategoryNames] = useState({});
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    // Fetch categories for all products when the component mounts or products change
+    const fetchCategories = async () => {
+      const newCategoryNames = {};
+
+      // Loop through products and fetch category for each product
+      for (const product of products) {
+        const status = await dispatch(getCategoryById(product.category));
+        if (status.meta.requestStatus === 'fulfilled') {
+          newCategoryNames[product._id] = status.payload.name;
+          console.log(newCategoryNames)
+        }
+      }
+
+      // Update state with fetched category names
+      setCategoryNames(newCategoryNames);
+    };
+
+    fetchCategories();
+  }, [dispatch, products]);
   const buttonHandler = (id) => {
     dispatch(getProductById(id)).then((status) => {
       if (status.meta.requestStatus === 'fulfilled')
@@ -135,8 +157,10 @@ function Products() {
 
                         </td>
                         <td className="whitespace-nowrap px-12 py-4">
-                          <div className="text-sm text-gray-900">{product.category}</div>
-                          <div className="text-sm text-gray-500">{product.category}</div>
+                        <div className="text-sm text-gray-900">
+                  {categoryNames[product._id] || 'Loading...'}
+                </div>
+                         
                         </td>
                         <td className="whitespace-nowrap px-4 py-4">
                           <span className="inline-flex font-normal text-sm leading-5 text-green-600">

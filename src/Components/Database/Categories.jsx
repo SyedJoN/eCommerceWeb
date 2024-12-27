@@ -38,8 +38,12 @@ function Categories() {
   }, [dispatch, currentPage]);
 
   const deleteCategory = (id) => {
-    dispatch(deleteCategoryById(id));
+    dispatch(deleteCategoryById(id)).then((status)=> {
+      if (status.meta.requestStatus === 'fulfilled')
+        dispatch(fetchCategories());
   }
+    )}
+    
   const editHandler = (id) => {
     navigate(`/database/categories/edit-category/${id}`)
   }

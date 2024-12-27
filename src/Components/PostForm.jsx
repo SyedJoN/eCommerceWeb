@@ -326,7 +326,7 @@ function PostForm({ product }) {
 
                 <Select
                     options={categories}
-                    label="Status"
+                    label="Category"
                     className="mb-4"
                     {...register("category", { required: true })}
                 />

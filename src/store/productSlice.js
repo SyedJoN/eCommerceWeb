@@ -699,7 +699,7 @@ const productSlice = createSlice({
                 state.error = action.error.message;
 
             })
-            .addCase(deleteProductById.pending, (state, action) => {
+            .addCase(deleteProductById.pending, (state) => {
                 state.isLoading = true;
                 state.error = null;
 
