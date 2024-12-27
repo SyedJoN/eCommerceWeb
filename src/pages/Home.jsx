@@ -58,7 +58,7 @@ function Home() {
             {products?.map((product) => (
               <div
                 key={product._id}
-                className="relative aspect-[16/9]  w-auto rounded-md md:aspect-auto md:h-[400px]"
+                className="relative aspect-[16/9] w-auto rounded-md md:aspect-auto md:h-[400px]"
               >
                 <img
                   src={product.mainImage.url}

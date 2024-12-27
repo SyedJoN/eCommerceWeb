@@ -20,11 +20,13 @@ import ZoomedImage from "./Zoom/ZoomedImage";
 import Products from "./Database/Products"
 import AddProduct from "./Database/AddProduct";
 import EditProduct from "./Database/EditProduct";
+import EditCategory from "./Database/EditCategory";
 import Select from "./Select";
 import EditProfile from "./EditProfile";
 import EditAddresses from "./EditAddresses";
 import CheckoutForm from "./Checkout-Form";
 import CouponForm from "./Coupon-Form";
+import CategoryForm from "./CategoryForm";
 import Coupons from "./Database/Coupons";
 import Breadcrumbs from "./Breadcrumbs";
 
@@ -52,11 +54,13 @@ export {
     Products,
     AddProduct,
     EditProduct,
+    EditCategory,
     Select,
     EditProfile,
     EditAddresses,
     CheckoutForm,
     CouponForm,
+    CategoryForm,
     Coupons,
     Breadcrumbs
 

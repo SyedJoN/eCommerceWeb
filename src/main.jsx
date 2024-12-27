@@ -1,6 +1,6 @@
 import React from 'react'
 import { Home, Login, Signup, Blogs, ForgetPassword, ChangePassword, ResetPassword, UserProfile, Database, Products, ViewProduct, Checkout, CreateAddress, EditCoupon, CreateCoupon } from './pages/index.js'
-import {AuthLayout } from './Components/index.js'
+import {AuthLayout, EditCategory } from './Components/index.js'
 import store from './store/store.js'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
@@ -8,6 +8,8 @@ import './index.css'
 import { Provider } from 'react-redux'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { AddProduct, EditProduct, EditProfile, EditAddresses, Coupons } from './Components/index.js'
+import CreateCategory from './pages/CreateCategory.jsx'
+import Categories from './Components/Database/Categories.jsx'
 
 
 
@@ -186,6 +188,39 @@ const router = createBrowserRouter([
           <CreateCoupon />
           </AuthLayout>
 
+        )
+      },
+      {
+        path: 'database/categories',
+        element: (
+          <AuthLayout authentication={true}>
+            <Categories />
+          </AuthLayout>
+
+        )
+      },
+      {
+        path: 'database/categories/edit-category/:id',
+        element: (
+          <AuthLayout authentication={true}>
+          <EditCategory />
+          </AuthLayout>
+
+        )
+      },
+      {
+        path: 'database/categories/create-category',
+        element: (
+          <AuthLayout authentication={true}>
+          <CreateCategory />
+          </AuthLayout>
+
+        )
+      },
+      {
+        path: 'product/:id',
+        element: (
+          <ViewProduct />
         )
       },
      

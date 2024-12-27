@@ -1,5 +1,5 @@
 import React from 'react'
-import { BarChart, Wallet, Newspaper, BellRing, Paperclip, Brush, Wrench } from 'lucide-react'
+import { ChartBarStacked, BarChart, Wallet, Newspaper, BellRing, Paperclip, Brush, Wrench } from 'lucide-react'
 import Logo from './Logo'
 import { Link } from 'react-router-dom'
 
@@ -30,6 +30,15 @@ export function SideBar({ className = '' }) {
             >
               <Wallet className="h-5 w-5" aria-hidden="true" />
               <span className="mx-2 text-sm font-medium">Coupons</span>
+            </button>
+            </Link>
+            <Link to='/database/categories'>
+            <button
+              className="flex w-full transform items-center rounded-lg px-3 py-2 text-blacktransition-colors duration-300 hover:bg-gray-100 hover:text-gray-700"
+         
+            >
+              <ChartBarStacked className="h-5 w-5" aria-hidden="true" />
+              <span className="mx-2 text-sm font-medium">Categories</span>
             </button>
             </Link>
           </div>

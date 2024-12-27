@@ -43,6 +43,34 @@ export const fetchCategories = createAsyncThunk('products/fetch-categories', asy
     }
 })
 
+export const getCategoryById = createAsyncThunk(
+    'product/category/id',
+    async (categoryId, { rejectWithValue }) => {
+        try {
+
+            const response = await fetch(`http://localhost:8080/api/v1/ecommerce/categories/${categoryId}`, {
+                method: 'GET',
+                headers: {
+                    'accept': 'application/json',
+                },
+            });
+
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to fetch category');
+            }
+
+
+            const data = await response.json();
+            return data.data;
+        } catch (error) {
+            return rejectWithValue({ message: error.message || 'Error fetching product!' });
+        }
+    }
+)
+
+
 export const fetchProductsCat = createAsyncThunk('products/fetchByCat', async (_, { rejectWithValue }) => {
 
 
@@ -154,6 +182,34 @@ export const createProduct = createAsyncThunk(
         }
     }
 );
+export const createCategory = createAsyncThunk(
+    'database/categories/create-category',
+    async (userData, { rejectWithValue }) => {
+        try {
+      
+            const response = await fetch('http://localhost:8080/api/v1/ecommerce/categories', {
+                method: 'POST',
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: userData,
+                credentials: 'include',
+            });
+
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to create category');
+            }
+
+            const data = await response.json();
+            return data.data;
+        } catch (error) {
+            return rejectWithValue({ message: error.message || 'Error creating category!' });
+        }
+    }
+);
 export const addToCart = createAsyncThunk(
     'product/add-to-cart',
     async ({ productId, quantity }, { rejectWithValue }) => {
@@ -261,6 +317,34 @@ export const updateProduct = createAsyncThunk(
         }
     }
 );
+export const updateCategory = createAsyncThunk(
+    'category/updateCategory',
+    async ({ categoryId, categoryData }, { rejectWithValue }) => {
+
+        try {
+
+            const response = await fetch(`http://localhost:8080/api/v1/ecommerce/categories/${categoryId}`, {
+                method: 'PATCH',
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(categoryData),
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to update category');
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            return rejectWithValue({ message: error.message || 'Error updating category!' });
+        }
+    }
+);
 export const removeSubImages = createAsyncThunk(
     'auth/removeSubImages',
     async ({ productId, subImageId }, { rejectWithValue }) => {
@@ -346,7 +430,31 @@ export const deleteProductById = createAsyncThunk(
         }
 
     })
-
+    export const deleteCategoryById = createAsyncThunk(
+        '/delete-category',
+        async (categoryId, { rejectWithValue }) => {
+    
+            try {
+                const response = await fetch(`http://localhost:8080/api/v1/ecommerce/categories/${categoryId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'accept': 'application/json',
+                    },
+                    credentials: 'include'
+                });
+    
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'cant delete category')
+                }
+                const data = await response.json();
+                return data.data.deletedCategory;
+    
+            } catch (error) {
+                return rejectWithValue({ message: error.message || 'category not found!' })
+            }
+    
+        })
 export const createCoupon = createAsyncThunk(
     '/coupons/create-coupon',
     async (couponData, { rejectWithValue }) => {
@@ -555,6 +663,7 @@ const productSlice = createSlice({
         products: null,
         catProducts: null,
         categories: null,
+        specificCategory: null,
         error: null,
         coupons: null,
         specificCoupon: null
@@ -605,7 +714,21 @@ const productSlice = createSlice({
                 state.error = action.error.message;
 
             })
+            .addCase(deleteCategoryById.pending, (state, action) => {
+                state.isLoading = true;
+                state.error = null;
 
+            })
+            .addCase(deleteCategoryById.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.categories = state.categories.filter((prev) => prev._id !== action.payload._id)
+
+            })
+            .addCase(deleteCategoryById.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message;
+
+            })
             .addCase(createProduct.pending, (state) => {
                 state.isLoading = true;
             })
@@ -630,6 +753,19 @@ const productSlice = createSlice({
                 state.isLoading = false;
                 state.error = action.error.message || 'action error message'
             })
+            .addCase(updateCategory.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updateCategory.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.specificCategory = action.payload.data;
+            })
+            .addCase(updateCategory.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message || 'action error message'
+            })
+
+
             .addCase(getUserCart.pending, (state) => {
                 state.isLoading = true;
             })
@@ -810,6 +946,31 @@ const productSlice = createSlice({
                 state.isLoading = false;
                 state.error = action.error.message || 'action error message'
             })
+            .addCase(getCategoryById.pending, (state) => {
+                state.isLoading = true;
+
+            })
+            .addCase(getCategoryById.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.specificCategory = action.payload;
+            })
+            .addCase(getCategoryById.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message || 'action error message'
+            })
+            .addCase(createCategory.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(createCategory.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.categories = action.payload;
+
+            })
+            .addCase(createCategory.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message || 'action error message'
+            })
+
             .addCase(removeSubImages.pending, (state) => {
                 state.isLoading = true;
             })

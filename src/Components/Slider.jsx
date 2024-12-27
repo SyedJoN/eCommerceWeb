@@ -4,15 +4,15 @@ import 'react-slideshow-image/dist/styles.css';
 
 const fadeImages = [
   {
-    url: 'https://source.unsplash.com/random/1000x1000?tshirts',
+    url: 'slider1.jpg',
     caption: 'First Slide'
   },
   {
-    url: 'https://source.unsplash.com/random/1000x1000?mens_clothing',
+    url: 'slider2.jpg',
     caption: 'Second Slide'
   },
   {
-    url: 'https://source.unsplash.com/random/1000x1000?women_clothing',
+    url: 'slider3.jpg',
     caption: 'Third Slide'
   },
 ];
