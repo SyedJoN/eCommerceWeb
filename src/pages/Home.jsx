@@ -3,11 +3,12 @@ import { blogList } from "../config/data";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchCurrentUser, userProfile } from "../store/authSlice";
-import { Slideshow } from "../Components";
+import { Container, Slideshow } from "../Components";
 import {
   fetchProducts,
   getProductById,
   fetchCategories,
+  getProductsByCategory,
 } from "../store/productSlice";
 import parse from "html-react-parser";
 
@@ -23,7 +24,11 @@ function Home() {
       if (status.meta.requestStatus === "fulfilled") navigate(`/product/${id}`);
     });
   };
-
+const buttonCategoryHandler = (cat, id) => {
+  dispatch(getProductsByCategory({qt: 'page=1&limit=4', id})).then((status) => {
+    if (status.meta.requestStatus === "fulfilled")       navigate(`/${cat}`, { state: { id } });;
+  });
+}
   useEffect(() => {
     if (Array.isArray(products)) {
       setLoading(false);
@@ -46,14 +51,14 @@ function Home() {
   ) : (
     <div className="w-full">
       <Slideshow />
-
-      <div className="w-full py-12 ">
+<Container>
+      <div className="w-full py-12">
         <div className="flex flex-wrap justify-center">
           <h1 className="w-full text-center text-4xl font-bold my-10 text-gray-800">
             New Arrivals
             <div className="w-24 mx-auto border-b-2 border-indigo-600 mt-2"></div>
           </h1>
-          <div className="mx-auto grid w-full max-w-7xl items-center space-y-4 px-2 py-10 md:grid-cols-2 md:gap-6 md:space-y-0 lg:grid-cols-4">
+          <div className="grid w-full items-center space-y-4 px-2 py-10 md:grid-cols-2 md:gap-6 md:space-y-0 lg:grid-cols-4">
             {products?.map((product) => (
               <div
                 key={product._id}
@@ -102,7 +107,7 @@ function Home() {
                       : cat.name === "Tees"
                       ? "/categories/tees.jpg"
                       : cat.name === "Shirts"
-                      ? "/categories/shirts.jpeg"
+                      ? "/categories/shirts.jpg"
                       : ""
                   }
                   alt={cat.name}
@@ -115,20 +120,21 @@ function Home() {
                     {cat.name}
                   </h1>
 
-                  <Link to={`/product/${cat._id}`}>
+                  
                     <button
                       className="mt-2 inline-flex cursor-pointer items-center text-sm font-semibold text-white"
-                      onClick={() => buttonHandler(cat._id)}
+                      onClick={() => buttonCategoryHandler(cat.name, cat._id)}
                     >
                       Shop Now &rarr;
                     </button>
-                  </Link>
+                  
                 </div>
               </div>
             ))}
           </div>
         </div>
       </div>
+    </Container>
     </div>
   );
 }

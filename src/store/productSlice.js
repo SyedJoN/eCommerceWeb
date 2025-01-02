@@ -71,32 +71,6 @@ export const getCategoryById = createAsyncThunk(
 )
 
 
-export const fetchProductsCat = createAsyncThunk('products/fetchByCat', async (_, { rejectWithValue }) => {
-
-
-
-    try {
-        const response = await fetch('http://localhost:8080/api/v1/ecommerce/categories', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'No Category Products Found');
-        }
-
-        const data = await response.json();
-        return data.categories;
-
-
-    } catch (error) {
-        return rejectWithValue({ message: error.message || 'Error fetching Category Products' });
-    }
-});
-
 
 export const fetchCurrentUser = createAsyncThunk(
     'user/fetchCurrentUser',
@@ -402,6 +376,37 @@ export const getProductById = createAsyncThunk(
         }
     }
 );
+export const getProductsByCategory = createAsyncThunk(
+    'category/products', 
+    async ({ qt, id }, { rejectWithValue }) => {
+        try {
+            const url = new URL(`http://localhost:8080/api/v1/ecommerce/products/category/${id}`);
+            if (qt) {
+                url.search = qt;
+            }
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Cannot fetch products by category');
+            }
+
+            const data = await response.json();
+            return data.data.products;
+
+        } catch (error) {
+            return rejectWithValue({
+                message: error.message || 'Error fetching products by category',
+            });
+        }
+    }
+);
 
 
 
@@ -686,15 +691,15 @@ const productSlice = createSlice({
                 state.isLoading = false;
                 state.error = action.error.message;
             })
-            .addCase(fetchProductsCat.pending, (state) => {
+            .addCase(getProductsByCategory.pending, (state) => {
                 state.isLoading = true;
                 state.error = null;
             })
-            .addCase(fetchProductsCat.fulfilled, (state, action) => {
+            .addCase(getProductsByCategory.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.catProducts = action.payload;
             })
-            .addCase(fetchProductsCat.rejected, (state, action) => {
+            .addCase(getProductsByCategory.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.error.message;
 

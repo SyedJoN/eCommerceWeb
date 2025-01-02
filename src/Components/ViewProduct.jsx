@@ -58,6 +58,7 @@ function ViewProduct() {
     }
     const cartHandler = (productId, quantity) => {
         dispatch(addToCart({ productId, quantity })).then(() => {
+            dispatch(getUserCart());
             setOpen((prev) => !prev)
             
         }
@@ -103,9 +104,6 @@ function ViewProduct() {
 
     };
 
-    useEffect(() => {
-        dispatch(getUserCart());
-    })
     const copyCodeToClipboard = (code) => {
         const el = document.createElement('textarea'); // Create a textarea element
         el.value = code; // Set the value to be copied
@@ -478,7 +476,7 @@ function ViewProduct() {
                         </header>
                         <div>
                             <div className="pb-6 text-sm leading-7 text-gray-600 md:pb-7">
-                                {product.description}
+                                {parse(product.description)}
                             </div>
                         </div>
                     </div>

@@ -13,6 +13,7 @@ import CreateAddress from "./CreateAddress";
 import Checkout from "./Checkout";
 import EditCoupon from "./EditCoupon"
 import CreateCoupon from "./CreateCoupon";
+import CategoryProducts from "./CategoryProducts";
 
 
 export  {
@@ -30,5 +31,6 @@ export  {
     CreateAddress,
     Checkout,
     EditCoupon,
-    CreateCoupon
+    CreateCoupon,
+    CategoryProducts
 }
