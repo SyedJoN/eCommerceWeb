@@ -14,6 +14,7 @@ import Checkout from "./Checkout";
 import EditCoupon from "./EditCoupon"
 import CreateCoupon from "./CreateCoupon";
 import CategoryProducts from "./CategoryProducts";
+import MultiRangeSlider from "../Components/DualRangeSlider";
 
 
 export  {
@@ -32,5 +33,6 @@ export  {
     Checkout,
     EditCoupon,
     CreateCoupon,
-    CategoryProducts
+    CategoryProducts,
+    MultiRangeSlider
 }

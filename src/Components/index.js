@@ -29,6 +29,8 @@ import CouponForm from "./Coupon-Form";
 import CategoryForm from "./CategoryForm";
 import Coupons from "./Database/Coupons";
 import Breadcrumbs from "./Breadcrumbs";
+import DisclosureComponent from "./DisclosureComponent";
+import DualRangeSlider from "./DualRangeSlider";
 
 
 export {
@@ -62,7 +64,9 @@ export {
     CouponForm,
     CategoryForm,
     Coupons,
-    Breadcrumbs
+    Breadcrumbs,
+    DisclosureComponent,
+    DualRangeSlider
 
 
 }

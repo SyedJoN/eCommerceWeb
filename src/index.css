@@ -9,6 +9,10 @@ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 @tailwind utilities;
 
 
+.multi-range-slider .thumb .caption * {
+  background-color: #000;
+}
+
 .custom-hide-scrollbar {
   scrollbar-width: none; /* Firefox */
 }

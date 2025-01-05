@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { getProductById, getProductsByCategory } from "../store/productSlice";
-import { Container } from "../Components";
+import { Container, DisclosureComponent } from "../Components";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
@@ -16,7 +16,8 @@ function CategoryProducts() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const { id } = location.state || {};
-
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(5000);
   const buttonHandler = (id) => {
     dispatch(getProductById(id)).then((status) => {
       if (status.meta.requestStatus === "fulfilled") navigate(`/product/${id}`);
@@ -44,13 +45,18 @@ function CategoryProducts() {
   useEffect(() => {
     dispatch(getProductsByCategory({ qt: "page=1&limit=4", id }));
   }, []);
+   
+  const filterProductByPrice = (products, minPrice, maxPrice) => {
+  return [...products].filter((product) => product.price >= minPrice && product.price <= maxPrice);
+  }
 
   useEffect(() => {
     if (catProducts && catProducts.length > 0) {
-      const sorted = sortProducts(catProducts, sortOrder);
+      const filteredProducts = filterProductByPrice(catProducts, minPrice, maxPrice);
+      const sorted = sortProducts(filteredProducts, sortOrder);
       setSortedProducts(sorted);
     }
-  }, [catProducts, sortOrder]);
+  }, [catProducts, sortOrder, minPrice, maxPrice]);
 
   return (
     <Container>
@@ -81,12 +87,13 @@ function CategoryProducts() {
                   leaveTo="-translate-x-full"
                 >
                   <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
-                    <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                      <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
-                        <div className="flex items-start justify-between">
+                    <div className="flex h-full flex-col bg-white shadow-xl">
+                      <div className="flex-1 overflow-y-auto px-6 py-4 sm:px-6">
+                        <div className="flex items-start justify-between pb-4">
                           <Dialog.Title className="text-lg font-medium text-gray-900">
                             Filter
                           </Dialog.Title>
+                         
                           <div className="ml-3 flex h-7 items-center">
                             <button
                               type="button"
@@ -101,58 +108,17 @@ function CategoryProducts() {
                               />
                             </button>
                           </div>
+                        
                         </div>
+                        <hr className="border-t border-gray-300" />
+<div className="py-4">
 
-                        <div className="mt-8">
-                          <div className="flow-root">
-                            <ul
-                              role="list"
-                              className="-my-6 divide-y divide-gray-200"
-                            ></ul>
-                          </div>
-                        </div>
+<DisclosureComponent title="Price" minPrice={minPrice} maxPrice={maxPrice} setMinPrice={setMinPrice} setMaxPrice={setMaxPrice} />
+
+</div>
+                   
                       </div>
 
-                      <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-                        <div className="flex justify-between text-base font-medium text-gray-900">
-                          <p>Subtotal</p>
-                          <p>Rs.</p>
-                        </div>
-                        <p className={``}>error</p>
-                        <div className="flex mt-3">
-                          <input
-                            className="w-72 rounded-md text-3xl outline-none border border-gray-300"
-                            type="text"
-                          />
-                          <button
-                            className="bg-gray-200 border border-gray-400 rounded md ml-2"
-                            htmlFor=""
-                          >
-                            APPLY COUPON
-                          </button>
-                        </div>
-                        <p className="mt-0.5 text-sm text-gray-500">
-                          Shipping and taxes calculated at checkout.
-                        </p>
-                        <div className="mt-6">
-                          <button className="w-full justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
-                            Checkout
-                          </button>
-                        </div>
-                        <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-                          <p>
-                            or
-                            <button
-                              type="button"
-                              className="font-medium text-indigo-600 hover:text-indigo-500"
-                              onClick={() => setOpen(false)}
-                            >
-                              Continue Shopping
-                              <span aria-hidden="true"> &rarr;</span>
-                            </button>
-                          </p>
-                        </div>
-                      </div>
                     </div>
                   </Dialog.Panel>
                 </Transition.Child>
