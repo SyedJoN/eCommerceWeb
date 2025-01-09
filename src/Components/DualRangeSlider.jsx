@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import React, { useCallback, useState } from "react";
 import MultiRangeSlider from "multi-range-slider-react";
 import PropTypes from "prop-types";
 import debounce from "lodash.debounce";
@@ -40,8 +40,8 @@ const DualRangeSlider = ({ min, max, onChange }) => {
         thumbRightColor="white"
       />
       <div className="divOutput flex justify-between items-center">
-        <div>Rs. {minValue}</div>
-        <div>Rs. {maxValue}</div>
+        <div>Rs. {min}</div>
+        <div>Rs. {max}</div>
       </div>
     </>
   );

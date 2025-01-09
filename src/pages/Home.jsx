@@ -3,7 +3,7 @@ import { blogList } from "../config/data";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchCurrentUser, userProfile } from "../store/authSlice";
-import { Container, Slideshow } from "../Components";
+import { Banner, Container, Slideshow } from "../Components";
 import {
   fetchProducts,
   getProductById,
@@ -11,6 +11,7 @@ import {
   getProductsByCategory,
 } from "../store/productSlice";
 import parse from "html-react-parser";
+import { Search } from "lucide-react";
 
 function Home() {
   const dispatch = useDispatch();
@@ -50,7 +51,20 @@ const buttonCategoryHandler = (cat, id) => {
     <div>Loading...</div>
   ) : (
     <div className="w-full">
-      <Slideshow />
+      <div className="hero-section w-full overlay">
+    <Container>
+    <div className="hero-content">
+      <h1 className="md:text-5xl font-bold text-white text-4xl">Welcome to MJ Store</h1>
+      <p className="text-lg font-semibold text-white py-2">Get the best quality products at the best prices</p>
+      <div className="relative search w-full max-w-xl mx-auto">
+      <input type="text" placeholder="Search your favourite products..." className="inline-block w-full  bg-white text-black font-semibold text-lg px-4 py-3 rounded-md mt-4"/>
+      <Search size={24} className="absolute bottom-[15px] right-4 text-indigo-600 cursor-pointer focus:outline-none"/>
+
+      </div>
+    </div>
+    </Container>
+      </div>
+      {/* <Slideshow /> */}
 <Container>
       <div className="w-full py-12">
         <div className="flex flex-wrap justify-center">
@@ -58,7 +72,7 @@ const buttonCategoryHandler = (cat, id) => {
             New Arrivals
             <div className="w-24 mx-auto border-b-2 border-indigo-600 mt-2"></div>
           </h1>
-          <div className="grid w-full items-center space-y-4 px-2 py-10 md:grid-cols-2 md:gap-6 md:space-y-0 lg:grid-cols-4">
+          <div className="grid w-full items-center space-y-4 py-10 md:grid-cols-2 md:gap-6 md:space-y-0 lg:grid-cols-4">
             {products?.map((product) => (
               <div
                 key={product._id}
@@ -88,6 +102,7 @@ const buttonCategoryHandler = (cat, id) => {
               </div>
             ))}
           </div>
+          <Banner />
           <h1 className="w-full text-center text-4xl font-bold text-gray-800 my-10">
             Categories
             <div className="w-24 mx-auto border-b-2 border-indigo-600 mt-2"></div>
@@ -132,6 +147,7 @@ const buttonCategoryHandler = (cat, id) => {
               </div>
             ))}
           </div>
+          
         </div>
       </div>
     </Container>

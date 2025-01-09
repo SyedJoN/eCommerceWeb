@@ -31,6 +31,7 @@ import Coupons from "./Database/Coupons";
 import Breadcrumbs from "./Breadcrumbs";
 import DisclosureComponent from "./DisclosureComponent";
 import DualRangeSlider from "./DualRangeSlider";
+import Banner from "./Banner";
 
 
 export {
@@ -66,7 +67,8 @@ export {
     Coupons,
     Breadcrumbs,
     DisclosureComponent,
-    DualRangeSlider
+    DualRangeSlider,
+    Banner
 
 
 }

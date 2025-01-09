@@ -14,6 +14,7 @@ function CategoryProducts() {
   const [sortedProducts, setSortedProducts] = useState([]);
   const [sortOrder, setSortOrder] = useState("new");
   const [open, setOpen] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const location = useLocation();
   const { id } = location.state || {};
   const [minPrice, setMinPrice] = useState(0);
@@ -45,16 +46,29 @@ function CategoryProducts() {
   useEffect(() => {
     dispatch(getProductsByCategory({ qt: "page=1&limit=4", id }));
   }, []);
-   
+
   const filterProductByPrice = (products, minPrice, maxPrice) => {
-  return [...products].filter((product) => product.price >= minPrice && product.price <= maxPrice);
-  }
+    return [...products].filter(
+      (product) => product.price >= minPrice && product.price <= maxPrice
+    );
+  };
 
   useEffect(() => {
     if (catProducts && catProducts.length > 0) {
-      const filteredProducts = filterProductByPrice(catProducts, minPrice, maxPrice);
+      const filteredProducts = filterProductByPrice(
+        catProducts,
+        minPrice,
+        maxPrice
+      );
       const sorted = sortProducts(filteredProducts, sortOrder);
       setSortedProducts(sorted);
+      if (filteredProducts.length === 0) {
+        setErrorMsg("Sorry! No such product exists per the filter");
+      } else {
+        setErrorMsg("");
+      }
+    } else {
+      setErrorMsg("No products found");
     }
   }, [catProducts, sortOrder, minPrice, maxPrice]);
 
@@ -93,7 +107,7 @@ function CategoryProducts() {
                           <Dialog.Title className="text-lg font-medium text-gray-900">
                             Filter
                           </Dialog.Title>
-                         
+
                           <div className="ml-3 flex h-7 items-center">
                             <button
                               type="button"
@@ -108,17 +122,18 @@ function CategoryProducts() {
                               />
                             </button>
                           </div>
-                        
                         </div>
                         <hr className="border-t border-gray-300" />
-<div className="py-4">
-
-<DisclosureComponent title="Price" minPrice={minPrice} maxPrice={maxPrice} setMinPrice={setMinPrice} setMaxPrice={setMaxPrice} />
-
-</div>
-                   
+                        <div className="py-4">
+                          <DisclosureComponent
+                            title="Price"
+                            minPrice={minPrice}
+                            maxPrice={maxPrice}
+                            setMinPrice={setMinPrice}
+                            setMaxPrice={setMaxPrice}
+                          />
+                        </div>
                       </div>
-
                     </div>
                   </Dialog.Panel>
                 </Transition.Child>
@@ -152,33 +167,45 @@ function CategoryProducts() {
         </div>
       </div>
       <div className="catProducts">
-        <div className="grid w-full items-center rounded-md space-y-4 px-2 py-10 md:grid-cols-2 md:gap-6 md:space-y-0 lg:grid-cols-4">
-          {sortedProducts?.map((product) => (
-            <div
-              onClick={() => buttonHandler(product._id)}
-              key={product._id}
-              className="relative aspect-[16/9] w-auto rounded-md md:aspect-auto md:h-full cursor-pointer "
-            >
-              <div className="relative group z-10">
-                <img
-                  src={product.mainImage.url}
-                  alt={product.name}
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-transparent group-hover:bg-black/30 transition-all"></div>
-              </div>
+        {errorMsg ? (
+          <>
+            {" "}
+            <div className="italic text-3xl pt-10 text-center">
+              {errorMsg}...
+            </div>
+            <div className="flex justify-center">
+              <i className="fa-regular fa-face-frown text-7xl py-3"></i>
+            </div>
+          </>
+        ) : (
+          <div className="grid w-full items-center rounded-md space-y-4 px-2 py-10 md:grid-cols-2 md:gap-6 md:space-y-0 lg:grid-cols-4">
+            {sortedProducts?.map((product) => (
+              <div
+                onClick={() => buttonHandler(product._id)}
+                key={product._id}
+                className="relative aspect-[16/9] w-auto rounded-md md:aspect-auto md:h-full cursor-pointer "
+              >
+                <div className="relative group z-10">
+                  <img
+                    src={product.mainImage.url}
+                    alt={product.name}
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-transparent group-hover:bg-black/30 transition-all"></div>
+                </div>
 
-              <div className="relative text-left py-3">
-                <h1 className="text-lg font-semibold text-black">
-                  {product.name}
-                </h1>
-                <div className="mt-2 text-md text-black font-bold">
-                  Rs. {product.price}
+                <div className="relative text-left py-3">
+                  <h1 className="text-lg font-semibold text-black">
+                    {product.name}
+                  </h1>
+                  <div className="mt-2 text-md text-black font-bold">
+                    Rs. {product.price}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </Container>
   );

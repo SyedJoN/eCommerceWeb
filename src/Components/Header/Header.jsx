@@ -38,6 +38,10 @@ function Header() {
     }
 
     useEffect(() => {
+        setShowDropdown(false);
+      }, [location.pathname]);
+      
+    useEffect(() => {
         setCartVal(userCart?.data.items.length)
         setErrorMsg('')
         setMsg('')
@@ -140,23 +144,19 @@ function Header() {
             slug: '/signup',
             active: !authStatus,
         },
-        {
-            name: 'Password',
-            slug: '/change-password',
-            active: authStatus,
-        },
+     
 
     ];
 
 
     return (
-        <header className='flex bg-white py-6'>
+        <header className='flex bg-white py-6 shadow-xl'>
             <Container>
                 {!isMobile && (
                     <nav className=''>
                         <div className='flex items-center justify-center'>
                             <Link to='/'>
-                                <Logo width='80%' />
+                               <img className="mx-auto" width="80%" src="/logo.png" alt="" />
                             </Link>
                         </div>
 
@@ -169,7 +169,7 @@ function Header() {
                         <ul className='flex justify-center mt-10'>
                             {navItems.map((link) =>
                                 link.active ? (
-                                    <li className='text-black sm:text-sm xl:text-base md:text-xs' key={link.name}>
+                                    <li className='text-black sm:text-sm xl:text-base' key={link.name}>
                                         <button
                                             className={`inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full font-semibold ${location.pathname === link.slug ? activeTabClassName : ''
                                                 }`}
@@ -212,6 +212,22 @@ function Header() {
                                                             Database
                                                         </Link>
                                                     </li>
+                                                    
+                                                )
+                                            }
+                                            {currentUser?.data.role === 'ADMIN' &&
+                                                (
+                                                    <li className={`${location.pathname === `/change-password` ? activeTabClassName : 'hover:bg-gray-200'}`}>
+                                                        <Link
+                                                            to={`/change-password`}
+                                                            className={`block px-4 py-2`}
+
+                                                            onClick={() => handleDropdownItemClick(`/change-password`)}
+                                                        >
+                                                            Reset Password
+                                                        </Link>
+                                                    </li>
+                                                    
                                                 )
                                             }
                                             <li>
@@ -388,15 +404,19 @@ function Header() {
 
 
                 {isMobile && (
-                    <nav className='flex justify-between'>
-
-                        <Link to='/'>
-                            <Logo width='150px' />
+                        <Container>
+                    <nav className='flex justify-between items-center'>
+<div>
+<Link to='/'>
+                            <img width="30%" className='max-auto' src="logo.png" alt="logo" />
                         </Link>
+</div>
+                    
 
+{!authStatus && (
 
                         <div className='relative flex'>
-                            <button className='scale-150 flex items-center focus:outline-none text-white' onClick={handleMenuToggle}>
+                            <button className='scale-150 flex items-center focus:outline-none text-indigo-600' onClick={handleMenuToggle}>
                                 {'\u2630'}
                             </button>
 
@@ -419,7 +439,7 @@ function Header() {
                                 </ul>
                             )}
                         </div>
-
+)}
                         {authStatus && (
                             <div className='relative'>
                                 <button className='flex items-center focus:outline-none ml-[6px]' onClick={handleDropdownToggle}>
@@ -461,8 +481,8 @@ function Header() {
                             </div>
                         )}
 
-
                     </nav>
+</Container>
                 )}
 
             </Container>

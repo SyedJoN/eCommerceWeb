@@ -16,7 +16,7 @@ function App() {
     <div className='min-h-screen flex flex-wrap content-between'>
       <div className='w-full block'>
         <Header />
-        {isHomePage ? null : <Breadcrumbs />}
+        {/* {isHomePage ? null : <Breadcrumbs />} */}
         <main >
           <Outlet />
         </main>

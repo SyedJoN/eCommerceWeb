@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Input, Button, Logo } from "../Components/index";
+import { Container } from "../Components/index";
 import { deleteAddress, getAddresses, updateAvatar } from "../store/authSlice";
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -49,7 +49,7 @@ function UserProfile({ width = '150px', height = '150px' }) {
 
         <div className="mx-auto max-w-7xl px-2 lg:px-0 mt-3">
 
-
+<Container>
             {/* <div className="mx-auto max-w-3xl text-center">
                 {/* <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-4xl lg:leading-tight">
                     Welcome {userProfile.firstName + ' ' + userProfile.lastName}
@@ -239,7 +239,7 @@ function UserProfile({ width = '150px', height = '150px' }) {
                 </div>
 
             </form>
-
+            </Container>
 
 
 

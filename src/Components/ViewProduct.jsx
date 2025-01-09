@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Flickity from 'react-flickity-component';
 import ZoomedImage from './Zoom/ZoomedImage';
 import parse from 'html-react-parser'
-import { addToCart, getCoupons } from '../store/productSlice';
+import { addToCart, getCoupons, getCustomerCoupons } from '../store/productSlice';
 import { getUserCart } from '../store/productSlice';
 import { useNavigate } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,7 +22,7 @@ function ViewProduct() {
     const navigate = useNavigate();
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const [itemCount, setItemCount] = useState(1)
-    const coupons = useSelector(state => state.product.coupons);
+    const coupons = useSelector(state => state.product.customerCoupons);
     const flickityRef = useRef(null);
     const [open, setOpen] = useState(false)
     const [coupon, setCoupon] = useState("");
@@ -31,13 +31,13 @@ function ViewProduct() {
         dispatch(clearCart());
   
     }
-
-    useEffect(() => {
-        dispatch(getCoupons())
-    }, [])
+  useEffect(()=> {
+   dispatch(getCustomerCoupons())
+  
+  }, [userCart])
     
     const checkoutHandler = () => {
-
+console.log('hi')
         navigate('/checkout')
 
     };
@@ -45,6 +45,7 @@ function ViewProduct() {
         dispatch(removeItemFromCart(productId))
     }
     const couponBtnHandler = () => {
+        console.log(coupon)
         dispatch(applyCoupon({ couponCode: coupon })).then((status) => {
             if (status.meta.requestStatus === 'rejected') {
                 setErrorMsg(status.payload.message)
@@ -105,16 +106,17 @@ function ViewProduct() {
     };
 
     const copyCodeToClipboard = (code) => {
-        const el = document.createElement('textarea'); // Create a textarea element
-        el.value = code; // Set the value to be copied
-        el.setAttribute('readonly', ''); // Make it read-only
+        const el = document.createElement('textarea'); 
+        el.value = code;
+        el.setAttribute('readonly', ''); 
         el.style.position = 'absolute';
-        el.style.left = '-9999px'; // Move outside the visible area
+        el.style.left = '-9999px'; 
 
-        document.body.appendChild(el); // Append the textarea to the document
-        el.select(); // Select the text inside the textarea
-        document.execCommand('copy'); // Copy the selected text to the clipboard
-        document.body.removeChild(el); // Remove the textarea from the document
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy'); 
+        document.body.removeChild(el); 
+        alert('Copied to clipboard');
     };
 
     const calDayLeft = (expiryDate) => {
@@ -133,7 +135,7 @@ function ViewProduct() {
 
 
         <div className="mx-auto max-w-7xl px-4 md:px-8 2xl:px-16">
-<Breadcrumbs/>
+{/* <Breadcrumbs/> */}
             <Transition.Root show={open} as={Fragment}>
                 <Dialog as="div" className="relative z-10" onClose={setOpen}>
                     <Transition.Child
@@ -161,8 +163,8 @@ function ViewProduct() {
                                     leaveTo="translate-x-full"
                                 >
                                     <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
-                                        <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                                            <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+                                        <div className="flex h-full flex-col bg-white shadow-xl">
+                                            <div className="flex-1 px-4 py-6 sm:px-6 overflow-y-auto">
                                                 <div className="flex items-start justify-between">
                                                     <Dialog.Title className="text-lg font-medium text-gray-900">Shopping cart</Dialog.Title>
                                                     <div className="ml-3 flex h-7 items-center">
@@ -227,10 +229,10 @@ function ViewProduct() {
 
                                             </div>
                                             {userCart?.data.items.length > 0 && (
-                                                <div className='flex flex-wrap items-end justify-end mx-5 my-2'>
-                                                    <button onClick={handleClearCart} className='text-sm mt-36 text-indigo-600 hover:text-indigo-500'>Clear all</button>
+                                               
+                                                    <button onClick={handleClearCart} className='flex justify-end mr-10 text-sm mt-2 text-indigo-600 hover:text-indigo-500'>Clear all</button>
 
-                                                </div>
+                                                
                                             )}
                                             <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                                                 <div className="flex justify-between text-base font-medium text-gray-900">
@@ -246,26 +248,14 @@ function ViewProduct() {
                                                 <div className="mt-6">
 
                                                     <button
-                                                        onClick={()=> checkoutHandler}
+                                                        onClick={checkoutHandler}
                                                         className="w-full justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                                                     >
                                                         Checkout
                                                     </button>
 
                                                 </div>
-                                                <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-                                                    <p>
-                                                        or
-                                                        <button
-                                                            type="button"
-                                                            className="font-medium text-indigo-600 hover:text-indigo-500"
-                                                            onClick={() => setOpen(false)}
-                                                        >
-                                                            Continue Shopping
-                                                            <span aria-hidden="true"> &rarr;</span>
-                                                        </button>
-                                                    </p>
-                                                </div>
+                                         
                                             </div>
                                         </div>
                                     </Dialog.Panel>
@@ -332,7 +322,7 @@ function ViewProduct() {
                             {coupons?.map((coupon, index) => (
                                 <div key={index} className="bg-white p-4 rounded-md shadow-md">
                                     <h3 className="text-lg font-medium mb-2">{coupon.couponCode}</h3>
-                                    <p className="text-gray-600">Name: {coupon.name}</p>
+                                    <p className="text-green-600 font-semibold">Discount: Rs. {coupon.discountValue}</p>
                                     <p className="text-gray-600">Type: {coupon.type}</p>
                                     <p className="text-red-600 italic">Expires in {calDayLeft(coupon.expiryDate)} days</p>
                                     <button
