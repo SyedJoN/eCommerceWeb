@@ -15,6 +15,7 @@ import EditCoupon from "./EditCoupon"
 import CreateCoupon from "./CreateCoupon";
 import CategoryProducts from "./CategoryProducts";
 import MultiRangeSlider from "../Components/DualRangeSlider";
+import Testimonials from "../Components/Testimonials";
 
 
 export  {
@@ -34,5 +35,6 @@ export  {
     EditCoupon,
     CreateCoupon,
     CategoryProducts,
-    MultiRangeSlider
+    MultiRangeSlider,
+    Testimonials
 }

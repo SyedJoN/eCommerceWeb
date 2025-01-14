@@ -183,7 +183,7 @@ function CategoryProducts() {
               <div
                 onClick={() => buttonHandler(product._id)}
                 key={product._id}
-                className="relative aspect-[16/9] w-auto rounded-md md:aspect-auto md:h-full cursor-pointer "
+                className="relative aspect-[16/9] w-auto rounded-md md:aspect-auto md:h-full cursor-pointer"
               >
                 <div className="relative group z-10">
                   <img

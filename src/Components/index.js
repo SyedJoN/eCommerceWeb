@@ -32,6 +32,9 @@ import Breadcrumbs from "./Breadcrumbs";
 import DisclosureComponent from "./DisclosureComponent";
 import DualRangeSlider from "./DualRangeSlider";
 import Banner from "./Banner";
+import NewArrival from "./NewArrival";
+import CategoriesGrid from "./CategoriesGrid";
+import HighlightedCollections from "./HighlightedCollections";
 
 
 export {
@@ -68,7 +71,10 @@ export {
     Breadcrumbs,
     DisclosureComponent,
     DualRangeSlider,
-    Banner
+    Banner,
+    NewArrival,
+    CategoriesGrid,
+    HighlightedCollections
 
 
 }
